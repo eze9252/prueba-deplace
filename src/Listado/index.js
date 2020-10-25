@@ -5,6 +5,7 @@ import { AppProvider } from '../../src/Context'
 import Form from 'react-bootstrap/Form'
 import TableList from './components/table'
 import Pagination from "react-js-pagination";
+import Alert from 'react-bootstrap/Alert'
 require("react-bootstrap");
 
 class Listado extends React.Component{
@@ -16,8 +17,10 @@ class Listado extends React.Component{
         active_page: 1,
         characters: [],
         info: {},
+        notFound: false,
         name:''
     };
+    this.handleChangeName = this.handleChangeName.bind(this);
   }
 
 
@@ -26,10 +29,14 @@ class Listado extends React.Component{
     .then(res => {
         this.setState({ 
           info: res.data.info,
-          characters: res.data.results
+          characters: res.data.results,
+          notFound: false
         });
     })
     .catch(error => {
+    this.setState({ 
+            notFound: true,
+        });
       console.log("error: "+error);
     });
   }
@@ -39,7 +46,7 @@ class Listado extends React.Component{
   }
 
 
-  handleChangeName = (event) => {
+  handleChangeName(event){
     this.setState({
         name: event.target.value,
         active_page: 1
@@ -55,15 +62,18 @@ class Listado extends React.Component{
 
   render(){
 
-    console.log(this.state.info)
-    console.log(this.state.characters)
     return (
       <AppProvider value={this.state}>
         <div className="App">
           <NavbarPage/>
           <div className="container">
             <Form.Control className="input-search" type="text" placeholder="Ingrese un nombre de personaje" onChange={this.handleChangeName} />
-            <TableList/>
+            {
+                this.state.notFound ?  <Alert variant="warning">
+                    No encontramos personajes para la busqueda realizada.
+                    </Alert> :
+                    <TableList/>
+            }
             <Pagination
                 activePage={this.state.active_page}
                 itemsCountPerPage={20}

@@ -2,10 +2,9 @@ import * as React from 'react'
 import NavbarPage from '../Navbar'
 import axios from 'axios'
 import Card from 'react-bootstrap/Card'
-import { AppConsumer } from '../Context'
+import PropTypes from 'prop-types';
 
 class Detalle extends React.Component{
-    static contextType = AppConsumer
 
     constructor(props) {
         super(props);
@@ -19,7 +18,6 @@ class Detalle extends React.Component{
         const id = this.props.match.params.id;
         return axios.get('https://rickandmortyapi.com/api/character/'+id)
         .then(res => {
-            console.log(res.data)
             this.setState({ 
                 character: res.data,
                 location:res.data.location.name
@@ -58,6 +56,14 @@ class Detalle extends React.Component{
             </div>
             );
         }
+}
+
+Detalle.propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        id: PropTypes.string.isRequired
+      })
+   }),
 }
 
 export default Detalle;

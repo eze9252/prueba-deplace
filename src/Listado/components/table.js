@@ -3,10 +3,8 @@ import TableBoostrap from 'react-bootstrap/Table'
 import Card from 'react-bootstrap/Card'
 import { AppConsumer } from '../../../src/Context'
 
-class Table extends React.Component{
-    static contextType = AppConsumer
+const Table = () =>{
 
-    render(){
         return(
             <TableBoostrap striped bordered hover>
                 <thead>
@@ -22,22 +20,25 @@ class Table extends React.Component{
                 </thead>
                 <tbody>
                 {
-                    this.context.characters.map(data => {
-                        return <tr>
-                        <th>{data.id}</th>
-                        <th>{data.name}</th>
-                        <th>{data.status}</th>
-                        <th>{data.species}</th>
-                        <th>{data.gender}</th>
-                        <th><img alt="img" className="img-character" src={data.image}></img></th>
-                        <th><Card.Link href={"/detalle/"+data.id}>Ver detalle</Card.Link></th>
-                        </tr>
-                    })
+                    <AppConsumer>
+                    {context => (
+                        context.characters.map(data => {
+                            return <tr key={data.id}>
+                            <th>{data.id}</th>
+                            <th>{data.name}</th>
+                            <th>{data.status}</th>
+                            <th>{data.species}</th>
+                            <th>{data.gender}</th>
+                            <th><img alt="img" className="img-character" src={data.image}></img></th>
+                            <th><Card.Link href={"/detalle/"+data.id}>Ver detalle</Card.Link></th>
+                            </tr>
+                        })
+                    )}
+                    </AppConsumer>  
                 }
                 </tbody>
             </TableBoostrap>
         );
-    }
 }
 
 export default Table;
