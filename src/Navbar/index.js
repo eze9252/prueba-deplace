@@ -6,7 +6,7 @@ function NavbarPage() {
       <div className="navbar">
         <>
           <Navbar bg="dark" variant="dark">
-            <Navbar.Brand href="#home">
+            <Navbar.Brand href="/">
               Personajes Rick and Morty
             </Navbar.Brand>
           </Navbar>
